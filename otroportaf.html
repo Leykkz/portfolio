@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #00b4d8;
+            --text: #e5e5e5;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            backdrop-filter: blur(10px);
+            -webkit-backup-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: rgba(26, 26, 46, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        }
+        
+        .section-divider {
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--primary));
+            margin-top: -1px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backup-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 180, 216, 0.2);
+        }
+        
+        .skill-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--highlight), #0096c7);
+            transition: width 1s ease-in-out;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--highlight);
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--highlight);
+            border-radius: 4px;
+        }
+        
+        .contact-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-input:focus {
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.2);
+        }
+        
+        .floating-btn {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar fixed w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white flex items-center">
+                <span class="text-highlight mr-2">PORTFOLIO</span>
+                <span class="inline-block w-3 h-3 bg-highlight rounded-full animate-pulse"></span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-white hover:text-highlight transition duration-300">Inicio</a>
+                <a href="#about" class="text-white hover:text-highlight transition duration-300">Sobre mí</a>
+                <a href="#skills" class="text-white hover:text-highlight transition duration-300">Habilidades</a>
+                <a href="#portfolio" class="text-white hover:text-highlight transition duration-300">Proyectos</a>
+                <a href="#experience" class="text-white hover:text-highlight transition duration-300">Experiencia</a>
+                <a href="#contact" class="text-white hover:text-highlight transition duration-300">Contacto</a>
+            </div>
+            
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-primary bg-opacity-95 py-4 px-6 shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <a href="#home" class="text-white hover:text-highlight transition duration-300">Inicio</a>
+                <a href="#about" class="text-white hover:text-highlight transition duration-300">Sobre mí</a>
+                <a href="#skills" class="text-white hover:text-highlight transition duration-300">Habilidades</a>
+                <a href="#portfolio" class="text-white hover:text-highlight transition duration-300">Proyectos</a>
+                <a href="#experience" class="text-white hover:text-highlight transition duration-300">Experiencia</a>
+                <a href="#contact" class="text-white hover:text-highlight transition duration-300">Contacto</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://placehold.co/1920x1080" alt="Patrón abstracto de líneas geométricas blancas sobre fondo negro que se extiende a todo lo ancho" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 py-20 z-10 animate-on-scroll">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                        <span class="text-highlight">Hola, soy</span>
+                        <span class="text-white block md:inline mt-2 md:ml-4">Carlos Mendoza</span>
+                    </h1>
+                    <h2 class="text-xl md:text-3xl text-white mb-6">
+                        Ingeniero de Software &<br>
+                        <span class="text-highlight">Desarrollador Full Stack</span>
+                    </h2>
+                    <p class="text-white text-opacity-80 mb-8 max-w-lg">
+                        Creo soluciones digitales elegantes y eficientes para resolver problemas complejos. Mi enfoque combina diseño estético con funcionalidad sólida.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#contact" class="bg-highlight text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition duration-300 shadow-lg">
+                            Contáctame
+                        </a>
+                        <a href="#portfolio" class="border border-highlight text-highlight px-6 py-3 rounded-lg font-medium hover:bg-highlight hover:bg-opacity-10 transition duration-300">
+                            Ver Trabajos
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex justify-center relative">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-highlight to-primary border-8 border-opacity-20 border-white overflow-hidden shadow-2xl">
+                            <img src="https://placehold.co/800x800" alt="Retrato profesional de Carlos Mendoza, hombre hispano de 30 años con camisa blanca y fondo abstracto difuminado" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="absolute -bottom-6 -right-6 bg-secondary p-4 rounded-lg shadow-lg">
+                            <div class="text-white text-center">
+                                <p class="text-highlight font-bold text-xl">5+</p>
+                                <p>Años de Experiencia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-down text-highlight text-2xl animate-on-scroll">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-primary relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    <span class="text-highlight">Sobre</span> Mí
+                </h2>
+                <div class="w-20 h-1 bg-highlight mx-auto mb-6"></div>
+                <p class="text-white text-opacity-80 max-w-2xl mx-auto">
+                    Profesional apasionado por la tecnología con una visión clara para crear experiencias digitales impactantes.
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center gap-10 animate-on-scroll">
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-72 md:h-72 rounded-lg overflow-hidden shadow-xl">
+                            <img src="https://placehold.co/800x800" alt="Carlos Mendoza trabajando en su escritorio con múltiples monitores mostrando código, en un ambiente de oficina moderna" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-5 -right-5 bg-highlight text-white py-2 px-4 rounded-lg text-sm font-medium shadow-lg">
+                            <i class="fas fa-medal mr-2"></i> Mejor Desarrollador 2023
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3">
+                    <h3 class="text-2xl font-bold text-white mb-6">¿Quién soy?</h3>
+                    <p class="text-white text-opacity-80 mb-6">
+                        Soy un desarrollador full stack apasionado por crear soluciones tecnológicas innovadoras. Con más de 5 años de experiencia en el campo, he trabajado en diversos proyectos que van desde startups hasta grandes corporaciones, siempre buscando la excelencia en cada línea de código.
+                    </p>
+                    
+                    <p class="text-white text-opacity-80 mb-8">
+                        Mi filosofía se basa en el aprendizaje continuo y la adaptación a nuevas tecnologías. Creo firmemente que el diseño y la funcionalidad deben ir de la mano para crear productos que realmente impacten en la vida de las personas.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Enfoque Centrado</h4>
+                                <p class="text-white text-opacity-80 text-sm">Priorizo las necesidades del usuario en cada decisión de diseño.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Solución Creativa</h4>
+                                <p class="text-white text-opacity-80 text-sm">Me especializo en encontrar soluciones fuera de lo común.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Código Limpio</h4>
+                                <p class="text-white text-opacity-80 text-sm">Adhiero a las mejores prácticas de desarrollo y documentación.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Colaborativo</h4>
+                                <p class="text-white text-opacity-80 text-sm">Trabajo excelente en equipo y comunicación clara.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="border border-highlight text-highlight px-4 py-2 rounded-full text-sm hover:bg-highlight hover:bg-opacity-10 transition duration-300">
+                            <i class="fas fa-download mr-2"></i> Descargar CV
+                        </a>
+                        <a href="#contact" class="bg-highlight text-white px-4 py-2 rounded-full text-sm hover:bg-opacity-90 transition duration-300">
+                            <i class="fas fa-paper-plane mr-2"></i> Contáctame
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-secondary relative">
+        <div class="section-divider"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Mis <span class="text-highlight">Habilidades</span>
+                </h2>
+                <div class="w-20 h-1 bg-highlight mx-auto mb-6"></div>
+                <p class="text-white text-opacity-80 max-w-2xl mx-auto">
+                    Un amplio conjunto de habilidades técnicas y blandas que me permiten abordar proyectos desde múltiples perspectivas.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 animate-on-scroll">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-6 pl-4 border-l-4 border-highlight">Desarrollo Frontend</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">HTML5 & CSS3</span>
+                                <span class="text-highlight">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">JavaScript (ES6+)</span>
+                                <span class="text-highlight">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">React & Next.js</span>
+                                <span class="text-highlight">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">Vue & Nuxt.js</span>
+                                <span class="text-highlight">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">Responsive Design</span>
+                                <span class="text-highlight">92%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-6 pl-4 border-l-4 border-highlight">Desarrollo Backend</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">Node.js & Express</span>
+                                <span class="text-highlight">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">Python & Django</span>
+                                <span class="text-highlight">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">PHP & Laravel</span>
+                                <span class="text-highlight">70%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">Bases de Datos</span>
+                                <span class="text-highlight">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-white font-medium">APIs & Microservicios</span>
+                                <span class="text-highlight">87%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="progress" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 animate-on-scroll">
+                <h3 class="text-xl font-bold text-white mb-6 text-center">Otras Habilidades</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="skill-chip">Git & GitHub</div>
+                    <div class="skill-chip">Docker</div>
+                    <div class="skill-chip">AWS</div>
+                    <div class="skill-chip">UI/UX Design</div>
+                    <div class="skill-chip">Testing</div>
+                    <div class="skill-chip">Agile Methodologies</div>
+                    <div class="skill-chip">SEO</div>
+                    <div class="skill-chip">GraphQL</div>
+                    <div class="skill-chip">Web Performance</div>
+                    <div class="skill-chip">Security Best Practices</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-primary relative">
+        <div class="section-divider"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Mis <span class="text-highlight">Proyectos</span>
+                </h2>
+                <div class="w-20 h-1 bg-highlight mx-auto mb-6"></div>
+                <p class="text-white text-opacity-80 max-w-2xl mx-auto">
+                    Una selección de trabajos recientes que muestran mi experiencia y enfoque creativo.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-on-scroll">
+                <!-- Project 1 -->
+                <div class="card rounded-xl overflow-hidden transition-transform duration-500 hover:scale-105">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400" alt="Plataforma de comercio electrónico con interfaz limpia mostrando productos en cuadrícula con filtros laterales" class="w-full h-56 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-highlight bg-opacityC80 opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <div class="text-center px-4">
+                                <h4 class="text-white font-bold text-xl mb-2">eCommerce Platform</h4>
+                                <p class="text-white mb-4">Plataforma de comercio completo con carrito, pagos y dashboard de administración.</p>
+                                <a href="#" class="inline-block border border-white text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-20 transition">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Tienda Online Moderna</h3>
+                        <p class="text-white text-opacity-80 mb-4">React, Node.js, MongoDB, Stripe</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Full Stack</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Responsive</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">eCommerce</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="card rounded-xl overflow-hidden transition-transform duration-500 hover:scale-105">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400" alt="Dashboard de analítica con múltiples gráficos y métricas en tiempo real sobre fondo oscuro" class="w-full h-56 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-highlight bg-opacity-80 opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <div class="text-center px-4">
+                                <h4 class="text-white font-bold text-xl mb-2">Analytics Dashboard</h4>
+                                <p class="text-white mb-4">Herramienta de análisis de datos en tiempo real con visualizaciones interactivas.</p>
+                                <a href="#" class="inline-block border border-white text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-20 transition">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Sistema de Analítica</h3>
+                        <p class="text-white text-opacity-80 mb-4">Vue.js, Django, PostgreSQL, Chart.js</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Data Viz</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Real-time</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Custom API</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="card rounded-xl overflow-hidden transition-transform duration-500 hover:scale-105">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400" alt="Aplicación móvil de redes sociales mostrando perfiles de usuario y publicaciones en formato de tarjetas" class="w-full h-56 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-highlight bg-opacity-80 opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <div class="text-center px-4">
+                                <h4 class="text-white font-bold text-xl mb-2">Social Media App</h4>
+                                <p class="text-white mb-4">Aplicación social con autenticación, publicaciones y mensajería.</p>
+                                <a href="#" class="inline-block border border-white text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-20 transition">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Plataforma Social</h3>
+                        <p class="text-white text-opacity-80 mb-4">React Native, Firebase, Redux</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Mobile App</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Real-time</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Authentication</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="card rounded-xl overflow-hidden transition-transform duration-500 hover:scale-105">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400" alt="Sistema de gestión de proyectos con tablero Kanban, gráficos de progreso y lista de tareas" class="w-full h-56 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-highlight bg-opacity-80 opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <div class="text-center px-4">
+                                <h4 class="text-white font-bold text-xl mb-2">Project Management</h4>
+                                <p class="text-white mb-4">Herramienta colaborativa para gestión ágil de proyectos y equipos.</p>
+                                <a href="#" class="inline-block border border-white text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-20 transition">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Gestor de Proyectos</h3>
+                        <p class="text-white text-opacity-80 mb-4">Next.js, NestJS, MongoDB, WebSockets</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Collaboration</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Real-time</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Dashboard</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="card rounded-xl overflow-hidden transition-transform duration-500 hover:scale-105">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400" alt="Interfaz de aplicación financiera mostrando gráficos de gastos, presupuestos y transacciones recientes" class="w-full h-56 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-highlight bg-opacity-80 opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <div class="text-center px-4">
+                                <h4 class="text-white font-bold text-xl mb-2">Finance Tracker</h4>
+                                <p class="text-white mb-4">Sistema personalizado para seguimiento de finanzas y presupuestos.</p>
+                                <a href="#" class="inline-block border border-white text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-20 transition">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Gestor Financiero</h3>
+                        <p class="text-white text-opacity-80 mb-4">Angular, Laravel, MySQL</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Data Analysis</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Charts</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Security</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="card rounded-xl overflow-hidden transition-transform duration-500 hover:scale-105">
+                    <div class="relative overflow-hidden">
+                        <img src="https://placehold.co/600x400" alt="Sitio web de portafolio creativo con disposición minimalista y animaciones sutiles al desplazar" class="w-full h-56 object-cover transition-transform duration-700 hover:scale-110">
+                        <div class="absolute inset-0 bg-highlight bg-opacity-80 opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <div class="text-center px-4">
+                                <h4 class="text-white font-bold text-xl mb-2">Creative Portfolio</h4>
+                                <p class="text-white mb-4">Diseño web personalizado con animaciones y efectos modernos.</p>
+                                <a href="#" class="inline-block border border-white text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-20 transition">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Portafolio Creativo</h3>
+                        <p class="text-white text-opacity-80 mb-4">GSAP, Three.js, Sass</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Animation</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">Creative</span>
+                            <span class="text-xs bg-highlight bg-opacity-20 text-highlight px-3 py-1 rounded-full">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16 animate-on-scroll">
+                <a href="#" class="border border-highlight text-highlight px-6 py-3 rounded-lg font-medium hover:bg-highlight hover:bg-opacity-10 transition duration-300 inline-flex items-center">
+                    <span>Ver Todos los Proyectos</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-secondary relative">
+        <div class="section-divider"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Mi <span class="text-highlight">Experiencia</span>
+                </h2>
+                <div class="w-20 h-1 bg-highlight mx-auto mb-6"></div>
+                <p class="text-white text-opacity-80 max-w-2xl mx-auto">
+                    Trayectoria profesional y logros destacados a lo largo de mi carrera.
+                </p>
+            </div>
+            
+            <div class="relative animate-on-scroll">
+                <!-- Timeline -->
+                <div class="space-y-8 pl-10 md:pl-16">
+                    <!-- Experience 1 -->
+                    <div class="timeline-item relative pl-8">
+                        <div class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-highlight"></div>
+                        <div class="card p-6">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Senior Full Stack Developer</h3>
+                                    <h4 class="text-highlight font-medium">TechVision Solutions</h4>
+                                </div>
+                                <div class="mt-2 md:mt-0">
+                                    <span class="text-sm text-white text-opacity-70 bg-highlight bg-opacity-20 px-3 py-1 rounded-full">2021 - Presente</span>
+                                </div>
+                            </div>
+                            <ul class="text-white text-opacity-80 space-y-2">
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Lideré el desarrollo de una plataforma SaaS para gestión de contenido usado por más de 500 empresas.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Implementé arquitectura de microservicios mejorando el rendimiento en un 40%.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Mentor de 4 desarrolladores  s junior, mejorando sus habilidades técnicas.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 2 -->
+                    <div class="timeline-item relative pl-8">
+                        <div class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-highlight"></div>
+                        <div class="card p-6">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Full Stack Developer</h3>
+                                    <h4 class="text-highlight font-medium">Digital Innovations Inc.</h4>
+                                </div>
+                                <div class="mt-2 md:mt-0">
+                                    <span class="text-sm text-white text-opacity-70 bg-highlight bg-opacity-20 px-3 py-1 rounded-full">2019 - 2021</span>
+                                </div>
+                            </div>
+                            <ul class="text-white text-opacity-80 space-y-2">
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Desarrollo de aplicaciones web personalizadas para clientes corporativos.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Integración de sistemas de pago y APIs de terceros.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Optimización de rendimiento reduciendo tiempos de carga en un 35%.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 3 -->
+                    <div class="timeline-item relative pl-8">
+                        <div class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-highlight"></div>
+                        <div class="card p-6">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Frontend Developer</h3>
+                                    <h4 class="text-highlight font-medium">WebCraft Studios</h4>
+                                </div>
+                                <div class="mt-2 md:mt-0">
+                                    <span class="text-sm text-white text-opacity-70 bg-highlight bg-opacity-20 px-3 py-1 rounded-full">2017 - 2019</span>
+                                </div>
+                            </div>
+                            <ul class="text-white text-opacity-80 space-y-2">
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Desarrollo de interfaces de usuario interactivas y responsivas.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Implementación de diseños creativos con HTML5, CSS3 y JavaScript.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Colaboración estrecha con diseñadores para garantizar fidelidad al diseño.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Education -->
+                    <div class="timeline-item relative pl-8">
+                        <div class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-highlight"></div>
+                        <div class="card p-6">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Ingeniería en Sistemas</h3>
+                                    <h4 class="text-highlight font-medium">Universidad Tecnológica Nacional</h4>
+                                </div>
+                                <div class="mt-2 md:mt-0">
+                                    <span class="text-sm text-white text-opacity-70 bg-highlight bg-opacity-20 px-3 py-1 rounded-full">2013 - 2017</span>
+                                </div>
+                            </div>
+                            <ul class="text-white text-opacity-80 space-y-2">
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Especialización en desarrollo de software y arquitectura de sistemas.</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Tesis sobre "Optimización de algoritmos para procesamiento de datos".</span>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-circle text-[6px] mt-2 mr-2 text-highlight"></i>
+                                    <span>Promedio académico: 8.9/10</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-primary relative">
+        <div class="section-divider"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    <span class="text-highlight">Contáctame</span>
+                </h2>
+                <div class="w-20 h-1 bg-highlight mx-auto mb-6"></div>
+                <p class="text-white text-opacity-80 max-w-2xl mx-auto">
+                    ¡Hablemos sobre cómo puedo ayudarte con tu próximo proyecto! Estoy disponible para freelance o oportunidades a tiempo completo.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-on-scroll">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6">Información de Contacto</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-4 mt-1">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium">Correo Electrónico</h4>
+                                <a href="mailto:hola@carlosmendoza.dev" class="text-white text-opacity-80 hover:text-highlight transition">hola@carlosmendoza.dev</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-4 mt-1">
+                                <i class="fas fa-phone-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium">Teléfono</h4>
+                                <a href="tel:+541112345678" class="text-white text-opacity-80 hover:text-highlight transition">+54 11 1234-5678</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-highlight mr-4 mt-1">
+                                <i class="fas fa-map-marker-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium">Ubicación</h4>
+                                <p class="text-white text-opacity-80">Mendoza, Argentina</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h4 class="text-white font-medium mb-4">Conecta conmigo</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-highlight bg-opacity-20 text-highlight hover:bg-opacity-30 flex items-center justify-center transition">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-highlight bg-opacity-20 text-highlight hover:bg-opacity-30 flex items-center justify-center transition">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-highlight bg-opacity-20 text-highlight hover:bg-opacity-30 flex items-center justify-center transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-highlight bg-opacity-20 text-highlight hover:bg-opacity-30 flex items-center justify-center transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-white text-opacity-80 mb-2">Nombre</label>
+                                <input type="text" id="name" class="contact-input w-full px-4 py-3 rounded-lg focus:outline-none text-white" placeholder="Tu nombre">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-white text-opacity-80 mb-2">Correo Electrónico</label>
+                                <input type="email" id="email" class="contact-input w-full px-4 py-3 rounded-lg focus:outline-none text-white" placeholder="tu@email.com">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-white text-opacity-80 mb-2">Asunto</label>
+                            <input type="text" id="subject" class="contact-input w-full px-4 py-3 rounded-lg focus:outline-none text-white" placeholder="¿Sobre qué quieres hablar?">
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-white text-opacity-80 mb-2">Mensaje</label>
+                            <textarea id="message" rows="6" class="contact-input w-full px-4 py-3 rounded-lg focus:outline-none text-white" placeholder="Escribe tu mensaje aquí..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="bg-highlight text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition duration-300 w-full md:w-auto shadow-lg">
+                            <i class="fas fa-paper-plane mr-2"></i> Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-secondary py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold text-white flex items-center">
+                        <span class="text-highlight mr-2">LEO GOMEZ</span>
+                        <span class="inline-block w-3 h-3 bg-highlight rounded-full animate-pulse"></span>
+                    </a>
+                    <p class="text-white text-opacity-80 mt-2">Ingeniero de Software & Desarrollador Full Stack</p>
+                </div>
+                
+                <div class="text-white text-opacity-80 text-center md:text-right">
+                    <p>&copy; 2025 Todos los derechos reservados</p>
+                    <p class="text-sm mt-1">Diseñado y desarrollado con <i class="fas fa-heart text-highlight"></i> por Leo Gomez</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <a href="#home" class="fixed bottom-8 right-8 bg-highlight text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition duration-300 z-40">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- Floating Action Button -->
+    <div class="fixed bottom-28 right-8 z-40">
+        <div class="relative">
+            <button id="fab-toggle" class="floating-btn bg-highlight text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl">
+                <i class="fas fa-comment-dots text-xl"></i>
+            </button>
+            
+            <div id="fab-menu" class="hidden absolute bottom-full right-0 mb-4 space-y-2">
+                <a href="#" class="block bg-secondary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-highlight transition">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="block bg-secondary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-highlight transition">
+                    <i class="fas fa-phone-alt"></i>
+                </a>
+                <a href="#" class="block bg-secondary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-highlight transition">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        
+        // Floating action button
+        document.getElementById('fab-toggle').addEventListener('click', function() {
+            document.getElementById('fab-menu').classList.toggle('hidden');
+        });
+        
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Fill skill bars animation
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.progress');
+            
+            skillBars.forEach(bar => {
+                const percent = bar.style.width;
+                bar.style.width = '0';
+                
+                setTimeout(() => {
+                    bar.style.width = percent;
+                }, 100);
+            });
+        }
+        
+        // Initialize skill b
